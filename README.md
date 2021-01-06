@@ -2,9 +2,9 @@
 
 This is the code of PostHog's integration with Segment.
 
-While more limited than our own libraries, this allows you to send events to all your destinations with just one Segment library call.
+While more constrained than our own libraries, it allows you to send events to all your destinations with just one Segment library call.
 
-Check it out in the Segment Catalog: https://segment.com/integrations/posthog/.
+Available in the Segment Catalog: https://segment.com/integrations/posthog/.
 
 ## Questions?
 
