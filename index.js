@@ -36,13 +36,16 @@ async function onTrack(event, settings) {
  */
 async function onIdentify(event, settings) {
     if (!event.userId) {
-        throw new InvalidEventPayload('userId is required')
+        throw new InvalidEventPayload('userId is required when identifying')
     }
+    let { properties } = event
+    properties = properties || {}
+    properties['$anon_distinct_id'] = event.anonymousId
     return await onTrack(
         {
             ...event,
             event: '$identify',
-            $anon_distinct_id: event.anonymousId,
+            properties,
             $set: event.traits,
         },
         settings
