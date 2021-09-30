@@ -42,7 +42,7 @@ async function onIdentify(event, settings) {
     let { properties } = event
     properties = properties || {}
     properties['$anon_distinct_id'] = event.anonymousId
-    properties['$lib'] = '$segment'
+    properties['$lib'] = 'segment'
     return await onTrack(
         {
             ...event,
