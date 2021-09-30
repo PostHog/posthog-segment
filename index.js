@@ -18,6 +18,7 @@ async function onTrack(event, settings) {
             properties: {
                 ...event.properties,
                 distinct_id: event.userId || event.anonymousId,
+                $lib: 'segment',
             },
         }),
         headers: new Headers({
@@ -41,6 +42,7 @@ async function onIdentify(event, settings) {
     let { properties } = event
     properties = properties || {}
     properties['$anon_distinct_id'] = event.anonymousId
+    properties['$lib'] = '$segment'
     return await onTrack(
         {
             ...event,
@@ -69,8 +71,12 @@ async function onGroup(event, settings) {
 async function onPage(event, settings) {
     return await onTrack(
         {
-            event: '$pageview',
             ...event,
+            event: '$pageview',
+            properties: {
+                ...event.properties,
+                $lib: 'segment',
+            },
         },
         settings
     )
@@ -89,6 +95,7 @@ async function onAlias(event, settings) {
             properties: {
                 alias: event.previousId,
                 distinct_id: event.userId,
+                $lib: 'segment',
             },
         },
         settings
@@ -108,6 +115,7 @@ async function onScreen(event, settings) {
             properties: {
                 ...event.properties,
                 $screen_name: event.name,
+                $lib: 'segment',
             },
         },
         settings
