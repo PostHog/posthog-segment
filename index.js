@@ -25,8 +25,10 @@ function parseContext(context) {
     ret[value] = _.get(context, key)
   })
   
-  // Remove all mapped properties to reduce noise
-  context = _.omit(context, Object.keys(contextMapping))
+  // prepend all keys with segment_
+  context = _.mapKeys(context, function(value, key) {
+    return 'segment_' + key
+  })
   return {...ret, ...context}
 }
 /**
