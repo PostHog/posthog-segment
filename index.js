@@ -1,3 +1,34 @@
+const contextMapping = {
+  'ip': '$ip',
+  'page.url': '$current_url',
+  'page.path': '$pathname',
+  'os.name': '$os',
+  'page.referrer': '$referrer',
+  'screen.width': '$screen_width',
+  'screen.height': '$screen_height',
+  'device.type': '$device_type'
+}
+
+function parseContext(context) {
+  if(!context) {
+    return {}
+  }
+  let ret = {}
+  if(context.campaign) {
+    Object.entries(context.campaign).map(function([key, value]) {
+      ret['utm_' + key] = value
+    })
+    delete context['campaign']
+  }
+  
+  Object.entries(contextMapping).map(function([key, value]) {
+    ret[value] = _.get(context, key)
+  })
+  
+  // Remove all mapped properties to reduce noise
+  context = _.omit(context, Object.keys(contextMapping))
+  return {...ret, ...context}
+}
 /**
  * @param {SpecTrack} event The track event
  * @param {Object.<string, any>} settings Custom settings
@@ -16,8 +47,10 @@ async function onTrack(event, settings) {
             ...event,
             api_key: settings.apiKey,
             properties: {
+                ...parseContext(event.context),
                 ...event.properties,
                 distinct_id: event.userId || event.anonymousId,
+                $lib: 'Segment'
             },
         }),
         headers: new Headers({
