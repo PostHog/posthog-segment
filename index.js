@@ -15,7 +15,6 @@ async function onTrack(event, settings) {
     
     if (event.properties && event.properties.utm_name) {
         event.properties["utm_campaign"] = event.properties.utm_name
-        delete event.properties.utm_name
     }
 
     const res = await fetch(endpoint, {
