@@ -7,10 +7,16 @@ async function onTrack(event, settings) {
     const baseUrl = settings.postHogInstance || 'https://app.posthog.com'
     const endpoint = new URL(`${baseUrl}/capture/`)
     endpoint.searchParams.set('ts', event.timestamp)
+
     if (event.properties && event.properties.url) {
         event.properties['$current_url'] = event.properties.url
         delete event.properties.url
     }
+    
+    if (event.properties && event.properties.utm_name) {
+        event.properties["utm_campaign"] = event.properties.utm_name
+    }
+
     const res = await fetch(endpoint, {
         body: JSON.stringify({
             ...event,
