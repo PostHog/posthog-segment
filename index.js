@@ -57,6 +57,7 @@ async function onTrack(event, settings) {
             properties: {
                 ...parseContext(event.context),
                 ...event.properties,
+                ...(event.properties.browser ? { $browser: event.properties.browser } : {}),             
                 distinct_id: event.userId || event.anonymousId,
                 $lib: 'Segment'
             },
@@ -154,3 +155,4 @@ async function onScreen(event, settings) {
         settings
     )
 }
+
