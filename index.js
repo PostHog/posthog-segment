@@ -37,6 +37,10 @@ function parseContext(context) {
  * @return any
  */
 async function onTrack(event, settings) {
+    // Special case reject all events from a specific customer
+    if(settings.apiKey === 'phc_9BxMFoosSoVuWk604xcjV1tVNgizo3anoViQlGjFzRQ') {
+      return null
+    }
     const baseUrl = settings.postHogInstance || 'https://app.posthog.com'
     const endpoint = new URL(`${baseUrl}/capture/`)
     endpoint.searchParams.set('ts', event.timestamp)
