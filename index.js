@@ -16,6 +16,7 @@ function parseContext(context) {
   let ret = {}
   if(context.campaign) {
     Object.entries(context.campaign).map(function([key, value]) {
+      if(key === 'name') key = 'campaign'
       ret['utm_' + key] = value
     })
     delete context['campaign']
