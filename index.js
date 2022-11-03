@@ -134,8 +134,8 @@ async function onAlias(event, settings) {
             ...event,
             event: '$create_alias',
             properties: {
-                alias: event.previousId,
-                distinct_id: event.userId,
+                alias: event.userId,
+                distinct_id: event.previousId,
             },
         },
         settings
