@@ -55,6 +55,10 @@ async function onTrack(event, settings) {
         event.properties["$browser"] = event.properties.browser
     }
   
+    if (event.context && event.context.groupId) {
+        event.properties["$groups"] = {"segment_group": event.context.groupId}
+    }
+  
 
     const res = await fetch(endpoint, {
         body: JSON.stringify({
@@ -105,7 +109,18 @@ async function onIdentify(event, settings) {
  * @return any
  */
 async function onGroup(event, settings) {
-    throw new EventNotSupported('on groups is not supported')
+    return await onTrack(
+        {
+            ...event,
+            event: '$groupidentify',
+            properties: {
+              "$group_type": "segment_group",
+              "$group_key": event.groupId,
+              "$group_set": event.traits
+            },
+        },
+        settings
+    )
 }
 
 /**
@@ -160,4 +175,3 @@ async function onScreen(event, settings) {
         settings
     )
 }
-
