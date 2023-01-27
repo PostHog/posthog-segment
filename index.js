@@ -16,7 +16,6 @@ function parseContext(context) {
   let ret = {}
   if(context.campaign) {
     Object.entries(context.campaign).map(function([key, value]) {
-      if(key === 'name') key = 'campaign'
       ret['utm_' + key] = value
     })
     delete context['campaign']
@@ -53,6 +52,10 @@ async function onTrack(event, settings) {
   
     if (event.properties && event.properties.browser) {
         event.properties["$browser"] = event.properties.browser
+    }
+  
+  	if (event.context.groupId) {
+        event.properties["$groups"] = {"segment_group": event.context.groupId}
     }
   
 
@@ -105,7 +108,18 @@ async function onIdentify(event, settings) {
  * @return any
  */
 async function onGroup(event, settings) {
-    throw new EventNotSupported('on groups is not supported')
+    return await onTrack(
+        {
+            ...event,
+            event: '$groupidentify',
+            properties: {
+              "$group_type": "segment_group",
+              "$group_key": event.groupId,
+              "$group_set": event.traits
+            },
+        },
+        settings
+    )
 }
 
 /**
@@ -160,4 +174,3 @@ async function onScreen(event, settings) {
         settings
     )
 }
-
