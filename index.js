@@ -14,6 +14,9 @@ function parseContext(context) {
     return {}
   }
   let ret = {}
+  if (context.groupId) {
+    ret['$groups'] = {'segment_group': context.groupId}
+  }
   if(context.campaign) {
     Object.entries(context.campaign).map(function([key, value]) {
       if(key === 'name') key = 'campaign'
