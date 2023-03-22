@@ -59,6 +59,9 @@ async function onTrack(event, settings) {
     }
   
     if (event.context && event.context.groupId) {
+        if(!event.properties) {
+          event.properties = {}
+        }
         event.properties["$groups"] = {"segment_group": event.context.groupId}
     }
   
