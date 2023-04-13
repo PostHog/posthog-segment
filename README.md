@@ -16,3 +16,4 @@ We're here to help you with anything PostHog!
 ## Development
 
 See [Segment Spec](https://segment.com/docs/connections/spec/) for the source of the test data.
+Once changes are reviewed and merged, ping Tim who can contact Segment for the update.
