@@ -93,7 +93,10 @@ async function onTrack(event, settings) {
  */
 async function onIdentify(event, settings) {
     let { properties } = event
-    properties = properties || {}
+    properties = {
+        ...(properties || {}),
+        $set: event.traits,
+    }
 
     if (event.userId) {
         properties['$anon_distinct_id'] = event.anonymousId
@@ -103,7 +106,6 @@ async function onIdentify(event, settings) {
                 ...event,
                 event: '$identify',
                 properties,
-                $set: event.traits,
             },
             settings
         )
@@ -113,7 +115,6 @@ async function onIdentify(event, settings) {
                 ...event,
                 event: '$set',
                 properties,
-                $set: event.traits,
             },
             settings
         )

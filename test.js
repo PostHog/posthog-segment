@@ -95,14 +95,27 @@ describe('Segment Integration', () => {
                     $anon_distinct_id: '507f191e810c19729de860ea',
                     distinct_id: '97980cfea0067',
                     $lib: 'Segment',
+                    $set: {
+                        address: {
+                            city: 'San Francisco',
+                            country: 'USA',
+                            postalCode: '94103',
+                            state: 'CA',
+                            street: '6th St',
+                        },
+                        email: 'peter@example.com',
+                        logins: 5,
+                        name: 'Peter Gibbons',
+                        plan: 'premium',
+                    },
                 },
             })
         })
 
         it('should call $set if there is no userId', async () => {
-            const mockIdentify = {...mocks.identify }
+            const mockIdentify = { ...mocks.identify }
             mockIdentify.userId = undefined
-            
+
             await integration.onIdentify(mockIdentify, settings)
 
             const lastFetchCall = global.fetch.mock.calls[0]
@@ -118,11 +131,22 @@ describe('Segment Integration', () => {
                         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36',
                     distinct_id: '507f191e810c19729de860ea',
                     $lib: 'Segment',
+                    $set: {
+                        address: {
+                            city: 'San Francisco',
+                            country: 'USA',
+                            postalCode: '94103',
+                            state: 'CA',
+                            street: '6th St',
+                        },
+                        email: 'peter@example.com',
+                        logins: 5,
+                        name: 'Peter Gibbons',
+                        plan: 'premium',
+                    },
                 },
             })
         })
-
-
     })
 
     describe('onGroup', () => {
