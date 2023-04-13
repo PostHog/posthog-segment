@@ -1,0 +1,21 @@
+{
+    "anonymousId": "3a12eab0-bca7-11e4-8dfc-aa07a5b093db",
+    "channel": "mobile",
+    "context": {
+        "ip": "8.8.8.8"
+    },
+    "integrations": {
+        "All": true
+    },
+    "messageId": "022bb90c-bbac-11e4-8dfc-aa07a5b093db",
+    "name": "Home",
+    "properties": {
+        "variation": "blue signup button"
+    },
+    "receivedAt": "2015-02-23T22:28:55.387Z",
+    "sentAt": "2015-02-23T22:28:55.111Z",
+    "timestamp": "2015-02-23T22:28:55.111Z",
+    "type": "screen",
+    "userId": "97980cfea0067",
+    "version": "1.1"
+}

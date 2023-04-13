@@ -1,39 +1,39 @@
 const contextMapping = {
-  'ip': '$ip',
-  'page.url': '$current_url',
-  'page.path': '$pathname',
-  'os.name': '$os',
-  'page.referrer': '$referrer',
-  'screen.width': '$screen_width',
-  'screen.height': '$screen_height',
-  'device.type': '$device_type'
+    ip: '$ip',
+    'page.url': '$current_url',
+    'page.path': '$pathname',
+    'os.name': '$os',
+    'page.referrer': '$referrer',
+    'screen.width': '$screen_width',
+    'screen.height': '$screen_height',
+    'device.type': '$device_type',
 }
 
 function parseContext(context) {
-  if(!context) {
-    return {}
-  }
-  let ret = {}
-  if (context.groupId) {
-    ret['$groups'] = {'segment_group': context.groupId}
-  }
-  if(context.campaign) {
-    Object.entries(context.campaign).map(function([key, value]) {
-      if(key === 'name') key = 'campaign'
-      ret['utm_' + key] = value
+    if (!context) {
+        return {}
+    }
+    let ret = {}
+    if (context.groupId) {
+        ret['$groups'] = { segment_group: context.groupId }
+    }
+    if (context.campaign) {
+        Object.entries(context.campaign).map(function ([key, value]) {
+            if (key === 'name') key = 'campaign'
+            ret['utm_' + key] = value
+        })
+        delete context['campaign']
+    }
+
+    Object.entries(contextMapping).map(function ([key, value]) {
+        ret[value] = _.get(context, key)
     })
-    delete context['campaign']
-  }
-  
-  Object.entries(contextMapping).map(function([key, value]) {
-    ret[value] = _.get(context, key)
-  })
-  
-  // prepend all keys with segment_
-  context = _.mapKeys(context, function(value, key) {
-    return 'segment_' + key
-  })
-  return {...ret, ...context}
+
+    // prepend all keys with segment_
+    context = _.mapKeys(context, function (value, key) {
+        return 'segment_' + key
+    })
+    return { ...ret, ...context }
 }
 /**
  * @param {SpecTrack} event The track event
@@ -49,32 +49,32 @@ async function onTrack(event, settings) {
         event.properties['$current_url'] = event.properties.url
         delete event.properties.url
     }
-    
+
     if (event.properties && event.properties.utm_name) {
-        event.properties["utm_campaign"] = event.properties.utm_name
+        event.properties['utm_campaign'] = event.properties.utm_name
     }
-  
+
     if (event.properties && event.properties.browser) {
-        event.properties["$browser"] = event.properties.browser
+        event.properties['$browser'] = event.properties.browser
     }
-  
+
     if (event.context && event.context.groupId) {
-        if(!event.properties) {
-          event.properties = {}
+        if (!event.properties) {
+            event.properties = {}
         }
-        event.properties["$groups"] = {"segment_group": event.context.groupId}
+        event.properties['$groups'] = { segment_group: event.context.groupId }
     }
-  
 
     const res = await fetch(endpoint, {
         body: JSON.stringify({
-            ...event,
+            timestamp: event.timestamp,
+            event: event.event,
             api_key: settings.apiKey,
             properties: {
                 ...parseContext(event.context),
                 ...event.properties,
                 distinct_id: event.userId || event.anonymousId,
-                $lib: 'Segment'
+                $lib: 'Segment',
             },
         }),
         headers: new Headers({
@@ -92,21 +92,35 @@ async function onTrack(event, settings) {
  * @return any
  */
 async function onIdentify(event, settings) {
-    if (!event.userId) {
-        throw new InvalidEventPayload('userId is required when identifying')
-    }
     let { properties } = event
-    properties = properties || {}
-    properties['$anon_distinct_id'] = event.anonymousId
-    return await onTrack(
-        {
-            ...event,
-            event: '$identify',
-            properties,
-            $set: event.traits,
-        },
-        settings
-    )
+    properties = {
+        ...(properties || {}),
+        $set: event.traits,
+    }
+
+    if (event.userId) {
+        if (event.anonymousId) {
+            properties['$anon_distinct_id'] = event.anonymousId
+        }
+
+        return await onTrack(
+            {
+                ...event,
+                event: '$identify',
+                properties,
+            },
+            settings
+        )
+    } else {
+        return await onTrack(
+            {
+                ...event,
+                event: '$set',
+                properties,
+            },
+            settings
+        )
+    }
 }
 
 /**
@@ -120,9 +134,9 @@ async function onGroup(event, settings) {
             ...event,
             event: '$groupidentify',
             properties: {
-              "$group_type": "segment_group",
-              "$group_key": event.groupId,
-              "$group_set": event.traits
+                $group_type: 'segment_group',
+                $group_key: event.groupId,
+                $group_set: event.traits,
             },
         },
         settings
@@ -180,4 +194,15 @@ async function onScreen(event, settings) {
         },
         settings
     )
+}
+
+if (module) {
+    module.exports = {
+        onTrack,
+        onIdentify,
+        onGroup,
+        onPage,
+        onAlias,
+        onScreen,
+    }
 }
