@@ -99,7 +99,9 @@ async function onIdentify(event, settings) {
     }
 
     if (event.userId) {
-        properties['$anon_distinct_id'] = event.anonymousId
+        if (event.anonymousId) {
+            properties['$anon_distinct_id'] = event.anonymousId
+        }
 
         return await onTrack(
             {
