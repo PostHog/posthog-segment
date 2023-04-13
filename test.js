@@ -98,6 +98,31 @@ describe('Segment Integration', () => {
                 },
             })
         })
+
+        it('should call $set if there is no userId', async () => {
+            const mockIdentify = {...mocks.identify }
+            mockIdentify.userId = undefined
+            
+            await integration.onIdentify(mockIdentify, settings)
+
+            const lastFetchCall = global.fetch.mock.calls[0]
+
+            expect(JSON.parse(lastFetchCall[1].body)).toEqual({
+                timestamp: '2015-02-23T22:28:55.111Z',
+                event: '$set',
+                api_key: 'test-key',
+                properties: {
+                    $ip: '8.8.8.8',
+                    segment_ip: '8.8.8.8',
+                    segment_userAgent:
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36',
+                    distinct_id: '507f191e810c19729de860ea',
+                    $lib: 'Segment',
+                },
+            })
+        })
+
+
     })
 
     describe('onGroup', () => {
