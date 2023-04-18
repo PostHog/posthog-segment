@@ -15,7 +15,8 @@ global.fetch = jest.fn(() =>
 
 global._ = require('lodash')
 
-const integration = require('./index.js')
+// See prepare-test.sh for why we use module.js instead of index.js
+const integration = require('./module.js')
 
 const settings = { postHogInstance: 'https://eu.posthog.com', apiKey: 'test-key' }
 
