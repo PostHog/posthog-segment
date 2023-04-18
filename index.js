@@ -196,13 +196,4 @@ async function onScreen(event, settings) {
     )
 }
 
-if (module) {
-    module.exports = {
-        onTrack,
-        onIdentify,
-        onGroup,
-        onPage,
-        onAlias,
-        onScreen,
-    }
-}
+// NOTE: module.exports will be added by tests script to a different file
