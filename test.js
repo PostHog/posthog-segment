@@ -69,6 +69,7 @@ describe('Segment Integration', () => {
                     segment_groupId: 'GroupId1',
                 },
                 timestamp: '2015-12-12T19:11:01.249Z',
+                uuid: '2e1e762e-c318-5c5b-a96e-955e840a3cf2',
             })
         })
     })
@@ -86,6 +87,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$identify',
                 api_key: 'test-key',
                 properties: {
@@ -123,6 +125,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$set',
                 api_key: 'test-key',
                 properties: {
@@ -163,6 +166,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$groupidentify',
                 api_key: 'test-key',
                 properties: {
@@ -199,6 +203,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$pageview',
                 api_key: 'test-key',
                 properties: {
@@ -228,6 +233,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$screen',
                 api_key: 'test-key',
                 properties: {
@@ -255,6 +261,7 @@ describe('Segment Integration', () => {
 
             expect(JSON.parse(lastFetchCall[1].body)).toEqual({
                 timestamp: '2015-02-23T22:28:55.111Z',
+                uuid: '38c091ab-1857-58c9-bf58-b98a022f95dd',
                 event: '$create_alias',
                 api_key: 'test-key',
                 properties: {
