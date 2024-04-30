@@ -171,6 +171,7 @@ describe('Segment Integration', () => {
                 api_key: 'test-key',
                 properties: {
                     $ip: '8.8.8.8',
+                    $geoip_disable: true,
                     segment_ip: '8.8.8.8',
                     segment_userAgent:
                         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36',

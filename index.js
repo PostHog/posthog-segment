@@ -138,6 +138,7 @@ async function onGroup(event, settings) {
             ...event,
             event: '$groupidentify',
             properties: {
+                $geoip_disable: true,
                 $group_type: 'segment_group',
                 $group_key: event.groupId,
                 $group_set: event.traits,
