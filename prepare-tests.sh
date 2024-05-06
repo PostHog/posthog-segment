@@ -7,6 +7,12 @@ set -e
 cp index.js module.js
 
 cat >> module.js <<EOF
+// Segment exposes uuidv5 as an object, so it is callable at uuidv5.uuidv5, see:
+// https://segment.com/docs/connections/functions/destination-functions/#runtime-and-dependencies
+const __uuidv5 = require('uuidv5')
+const uuidv5 = {
+    uuidv5: __uuidv5
+}
 module.exports = {
     onTrack,
     onIdentify,

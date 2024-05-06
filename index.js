@@ -45,6 +45,9 @@ async function onTrack(event, settings) {
     const endpoint = new URL(`${baseUrl}/capture/`)
     endpoint.searchParams.set('ts', event.timestamp)
 
+    const namespace = uuidv5.uuidv5('null', 'PostHog', true)
+    const uuid = uuidv5.uuidv5(namespace, event.messageId)
+
     if (event.properties && event.properties.url) {
         event.properties['$current_url'] = event.properties.url
         delete event.properties.url
@@ -67,6 +70,7 @@ async function onTrack(event, settings) {
 
     const res = await fetch(endpoint, {
         body: JSON.stringify({
+            uuid,
             timestamp: event.timestamp,
             event: event.event,
             api_key: settings.apiKey,
@@ -134,6 +138,7 @@ async function onGroup(event, settings) {
             ...event,
             event: '$groupidentify',
             properties: {
+                $geoip_disable: true,
                 $group_type: 'segment_group',
                 $group_key: event.groupId,
                 $group_set: event.traits,
