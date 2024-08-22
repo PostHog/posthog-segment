@@ -1,19 +1,19 @@
-# PostHog x Segment
+# PostHog's Segment destination
 
-This is the code of PostHog's integration with Segment.
+This is the code of PostHog's Segment destination.
 
-While more constrained than our own libraries, it allows you to send events to all your destinations with just one Segment library call.
+While more constrained than our own libraries, it enables us to receive events from Segment as a destination.
 
-Available in the Segment Catalog: https://segment.com/integrations/posthog/.
+You can find and install the destination via [Segment's integration page](https://segment.com/catalog/integrations/destination/posthog/).
+
+You can learn more about setup and its capacities in [our Segment doc](https://posthog.com/docs/libraries/segment) and [their PostHog destination doc](https://segment.com/docs/connections/destinations/catalog/posthog/).
 
 ## Questions?
 
-### [Join our Slack community.](https://join.slack.com/t/posthogusers/shared_invite/enQtOTY0MzU5NjAwMDY3LTc2MWQ0OTZlNjhkODk3ZDI3NDVjMDE1YjgxY2I4ZjI4MzJhZmVmNjJkN2NmMGJmMzc2N2U3Yjc3ZjI5NGFlZDQ)
-
-We're here to help you with anything PostHog!
-
+If you can't find the answer in [our docs](https://posthog.com/docs/libraries/segment), [ask a question](https://posthog.com/questions) in our community or [raise a support ticket [in-app](https://us.posthog.com/#panel=support.
 
 ## Development
 
 See [Segment Spec](https://segment.com/docs/connections/spec/) for the source of the test data.
+
 Once changes are reviewed and merged, ping Tim who can contact Segment for the update.
