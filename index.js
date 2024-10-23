@@ -68,6 +68,16 @@ async function onTrack(event, settings) {
         event.properties['$groups'] = { segment_group: event.context.groupId }
     }
 
+    // In alias cases, we set the distinct id explicitly and it has to be what's expected. In all other
+    // cases, we use the userId if it exists, otherwise the anonymousId.
+    let distinct_id = null;
+
+    if (event.event === '$create_alias') {
+        distinct_id = event.properties.distinct_id;
+    } else {
+        distinct_id = event.userId || event.anonymousId;
+    }
+
     const res = await fetch(endpoint, {
         body: JSON.stringify({
             uuid,
@@ -77,7 +87,7 @@ async function onTrack(event, settings) {
             properties: {
                 ...parseContext(event.context),
                 ...event.properties,
-                distinct_id: event.userId || event.anonymousId,
+                distinct_id: distinct_id,
                 $lib: 'Segment',
             },
         }),
