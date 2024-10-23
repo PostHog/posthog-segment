@@ -270,8 +270,8 @@ describe('Segment Integration', () => {
                     segment_ip: '8.8.8.8',
                     segment_userAgent:
                         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36',
-                    alias: '39239-239239-239239-23923',
-                    distinct_id: '507f191e81',
+                    alias: '507f191e81',
+                    distinct_id: '39239-239239-239239-23923',
                     $lib: 'Segment',
                 },
             })
